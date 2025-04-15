@@ -1,20 +1,31 @@
 """
 data_ingestion.py
-Handles downloading and loading YC company data from CSV files.
+Handles downloading and loading YC company data from the YC OSS JSON API.
 Integrates with DuckDB for storage and querying.
 """
 import pandas as pd
 import duckdb
+import requests
+import os
 
-def fetch_csv(url: str, dest_path: str):
-    """Download CSV from URL and save to dest_path."""
-    # TODO: Implement download logic
-    pass
+def fetch_json(url: str) -> list:
+    """Fetch JSON data from the given URL and return as a list of dicts."""
+    resp = requests.get(url)
+    resp.raise_for_status()
+    return resp.json()
 
-def load_csv(path: str) -> pd.DataFrame:
-    """Read CSV into DataFrame, handle missing values."""
-    # TODO: Implement CSV loading logic
-    pass
+def save_json_to_csv(json_data: list, dest_path: str):
+    """Save a list of dicts (JSON) to a CSV file at dest_path."""
+    df = pd.DataFrame(json_data)
+    df.to_csv(dest_path, index=False)
+    return dest_path
+
+def get_or_download_json_as_csv(json_url: str, local_csv_path: str) -> str:
+    """Fetch JSON from URL and save as CSV if not present locally."""
+    if not os.path.exists(local_csv_path):
+        data = fetch_json(json_url)
+        save_json_to_csv(data, local_csv_path)
+    return local_csv_path
 
 def load_csv_to_duckdb(csv_path: str, db_path: str = ':memory:', table_name: str = 'yc_companies') -> duckdb.DuckDBPyConnection:
     """
