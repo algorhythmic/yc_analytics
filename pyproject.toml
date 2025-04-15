@@ -1,0 +1,15 @@
+[project]
+name = "yc-analytics"
+version = "0.1.0"
+description = "A Streamlit-based dashboard for analyzing Y Combinator company data."
+requires-python = ">=3.8"
+
+[project.dependencies]
+streamlit = "*"
+pandas = "*"
+plotly = "*"
+requests = "*"
+duckdb = "*"
+
+[tool.uv]
+# UV-specific settings can be added here if needed
