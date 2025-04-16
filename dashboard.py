@@ -8,11 +8,11 @@ import os
 from data_ingestion import get_or_download_json_as_csv, load_csv_to_duckdb
 from data_transform import clean_data
 import plotly.express as px
+from config import DB_PATH
 
 # Config
 DEFAULT_JSON_URL = "https://yc-oss.github.io/api/companies/all.json"
 LOCAL_CSV_PATH = "./data/yc_companies.csv"
-DB_PATH = ":memory:"
 TABLE_NAME = "yc_companies"
 
 def main():
@@ -33,7 +33,7 @@ def main():
     # Clean data
     df = clean_data(df)
 
-    # Load into DuckDB (in-memory for now)
+    # Load into DuckDB (persistent file)
     con = load_csv_to_duckdb(csv_path=LOCAL_CSV_PATH, db_path=DB_PATH, table_name=TABLE_NAME)
 
     # Show table preview
