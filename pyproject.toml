@@ -13,3 +13,10 @@ dependencies = [
 
 [tool.uv]
 # UV-specific settings can be added here if needed
+
+[tool.poetry]
+name = "yc-analytics"
+version = "0.1.0"
+description = "A Streamlit-based dashboard for analyzing Y Combinator company data."
+authors = ["Your Name <your@email.com>"]
+package-mode = false
